@@ -1,3 +1,14 @@
+/* Remove default wrapper spacing */
+.wp-block-embed-youtube .wp-block-embed__wrapper:before,
+.wp-block-embed-vimeo .wp-block-embed__wrapper:before {
+    display: none !important;
+}
+
+.wp-block-embed-youtube .wp-block-embed__wrapper,
+.wp-block-embed-vimeo .wp-block-embed__wrapper {
+    padding: 0;
+}
+
 .lazy-embeds-wrapper {
     -webkit-font-smoothing: antialiased;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
@@ -42,6 +53,12 @@
 }
 
 /* YouTube */
+.lazy-embeds-wrapper--youtube :focus {
+    outline: #f00 solid 2px;
+    outline-offset: 2px;
+    color: #f00;
+}
+
 .lazy-embeds-wrapper--youtube::before {
     content: '';
     display: block;
@@ -107,6 +124,7 @@
 .lazy-embeds-wrapper--vimeo :focus {
     outline: #00adef solid 2px;
     outline-offset: 2px;
+    color: #00adef;
 }
 
 .lazy-embeds-wrapper__vimeo-header {
@@ -130,6 +148,10 @@
     padding: 5px;
     background-color: rgba(23,35,34,.75);
     margin-right: 2px;
+}
+
+.lazy-embeds-wrapper__vimeo-portrait a {
+    display: block;
 }
 
 .lazy-embeds-wrapper__vimeo-portrait img {
@@ -171,8 +193,9 @@
     text-transform: initial;
     font-weight: 700;
     font-size: 12px;
-    cursor: pointer;
-    text-decoration: none;
+    cursor: pointer !important;
+    text-decoration: none !important;
+    box-shadow: none !important;
 }
 
 .lazy-embeds-wrapper__vimeo-username:hover {

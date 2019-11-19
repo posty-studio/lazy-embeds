@@ -87,7 +87,7 @@ class Lazy_Embeds_Vimeo extends Lazy_Embeds_Base {
 				</div>
 			</div>
 
-			<div role="button" class="lazy-embeds-wrapper__vimeo-button" aria-label="<?php esc_attr_e( 'Play', 'lazy-embeds' ); ?>">
+			<div role="button" tabindex="0" class="lazy-embeds-wrapper__vimeo-button" aria-label="<?php esc_attr_e( 'Play', 'lazy-embeds' ); ?>">
 				<svg viewBox="0 0 20 20" preserveAspectRatio="xMidYMid"><path d="M1 0l19 10L1 20z"/></svg>
 			</div>
 		</div>
