@@ -1,16 +1,79 @@
+let preconnected = false;
+
+const addPrefetch = (kind, url, as) => {
+  const linkElem = document.createElement("link");
+  linkElem.rel = kind;
+  linkElem.href = url;
+
+  if (as) {
+    linkElem.as = as;
+  }
+
+  linkElem.crossorigin = true;
+  document.head.append(linkElem);
+};
+
+const warmConnections = () => {
+  if (preconnected) return;
+
+  // The iframe document and most of its subresources come right off youtube.com
+  addPrefetch("preconnect", "https://www.youtube.com");
+  // The botguard script is fetched off from google.com
+  addPrefetch("preconnect", "https://www.google.com");
+
+  preconnected = true;
+};
+
+const replaceYouTubeEmbed = wrapper => {
+  const id = encodeURIComponent(
+    wrapper.getAttribute("data-lazy-embeds-youtube-id")
+  );
+
+  const iframeHTML = `<iframe frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen src="https://www.youtube.com/embed/${id}?autoplay=1"></iframe>`;
+
+  wrapper.classList.add("lazy-embeds-wrapper--activated");
+  wrapper.insertAdjacentHTML("beforeend", iframeHTML);
+};
+
+const replaceVimeoEmbed = wrapper => {
+  const target = wrapper.closest("[data-lazy-embeds-vimeo-id]");
+  const id = encodeURIComponent(
+    target.getAttribute("data-lazy-embeds-vimeo-id")
+  );
+
+  const iframeHTML = `<iframe src="https://player.vimeo.com/video/${id}?dnt=1&autoplay=1" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
+
+  target.classList.add("lazy-embeds-wrapper--activated");
+  target.insertAdjacentHTML("beforeend", iframeHTML);
+};
+
 window.addEventListener("DOMContentLoaded", () => {
-  const items = document.querySelectorAll("[data-lazy-embeds-youtube-id]");
+  const youTubeItems = document.querySelectorAll(
+    "[data-lazy-embeds-youtube-id]"
+  );
+  const vimeoItems = document.querySelectorAll("[data-lazy-embeds-vimeo-id]");
 
-  for (const item of [...items]) {
+  for (const item of [...youTubeItems]) {
     item.addEventListener("click", event => {
-      const id = encodeURIComponent(
-        event.target.getAttribute("data-lazy-embeds-youtube-id")
-      );
+      replaceYouTubeEmbed(event.target);
+    });
 
-      const iframeHTML = `<iframe frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen src="https://www.youtube.com/embed/${id}?autoplay=1"></iframe>`;
+    item.addEventListener(
+      "pointerover",
+      () => {
+        warmConnections();
+      },
+      { once: true }
+    );
+  }
 
-      event.target.classList.add("lazy-embeds-wrapper--activated");
-      event.target.insertAdjacentHTML("beforeend", iframeHTML);
+  for (const item of [...vimeoItems]) {
+    item.addEventListener("click", event => {
+      if (event.target.closest("[href]")) {
+        return;
+      }
+
+      replaceVimeoEmbed(event.target);
     });
   }
 });

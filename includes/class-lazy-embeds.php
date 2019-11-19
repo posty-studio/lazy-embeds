@@ -11,7 +11,9 @@ class Lazy_Embeds {
 	}
 
 	private function load_dependencies() {
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-lazy-embeds-wrapper.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-lazy-embeds-base.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-lazy-embeds-youtube.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-lazy-embeds-vimeo.php';
 	}
 
 	private function set_locale() {
@@ -35,6 +37,7 @@ class Lazy_Embeds {
 	}
 
 	public function run() {
-		new Lazy_Embeds_Wrapper();
+		new Lazy_Embeds_YouTube();
+		new Lazy_Embeds_Vimeo();
 	}
 }
