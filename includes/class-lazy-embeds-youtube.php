@@ -25,13 +25,7 @@ class Lazy_Embeds_YouTube extends Lazy_Embeds_Base {
 	 * @return string
 	 */
 	private function get_youtube_thumbnail_url_from_id( $youtube_id ) {
-		return esc_url_raw( "https://i.ytimg.com/vi/{$youtube_id}/maxresdefault.jpg" );
-	}
-
-	/**
-	 * @return string
-	 */
-	private function get_iframe_html() {
+		return esc_url_raw( "https://i.ytimg.com/vi/{$youtube_id}/hqdefault.jpg" );
 	}
 
 	/**

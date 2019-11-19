@@ -32,13 +32,23 @@ class Lazy_Embeds_Vimeo extends Lazy_Embeds_Base {
 	 * @return array
 	 */
 	private function get_attributes_from_vimeo_id( $vimeo_id ) {
-		$video_info = wp_remote_retrieve_body( wp_remote_get( esc_url_raw( "https://vimeo.com/api/v2/video/{$vimeo_id}.json" ) ) );
+		$cached_attributes = get_transient( "lazy_embeds_vimeo_{$vimeo_id}" );
 
-		if ( empty( $video_info ) ) {
+		if ( $cached_attributes ) {
+			return $cached_attributes;
+		}
+
+		$attributes = wp_remote_retrieve_body( wp_remote_get( esc_url_raw( "https://vimeo.com/api/v2/video/{$vimeo_id}.json" ) ) );
+
+		if ( empty( $attributes ) ) {
 			return [];
 		}
 
-		return json_decode( $video_info )[0];
+		$decoded_attributes = json_decode( $attributes )[0];
+
+		set_transient( "lazy_embeds_vimeo_{$vimeo_id}", $decoded_attributes, DAY_IN_SECONDS );
+
+		return $decoded_attributes;
 	}
 
 	/**
