@@ -41,10 +41,6 @@ class Lazy_Embeds_YouTube extends Lazy_Embeds_Base {
 			return $block_content;
 		}
 
-		if ( strpos( $block_content, 'yeet' ) === false ) {
-			return $block_content;
-		}
-
 		$youtube_id = $this->get_youtube_id_from_url( $block['attrs']['url'] );
 
 		if ( ! $youtube_id ) {

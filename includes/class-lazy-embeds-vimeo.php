@@ -32,9 +32,9 @@ class Lazy_Embeds_Vimeo extends Lazy_Embeds_Base {
 	 * @return array
 	 */
 	private function get_attributes_from_vimeo_id( $vimeo_id ) {
-		$cached_attributes = get_transient( "lazy_embeds_vimeo_{$vimeo_id}" );
+		$transient_name = "lazy_embeds_vimeo_{$vimeo_id}";
 
-		if ( $cached_attributes ) {
+		if ( ( $cached_attributes = get_transient( $transient_name ) ) !== false ) {
 			return $cached_attributes;
 		}
 
@@ -44,11 +44,15 @@ class Lazy_Embeds_Vimeo extends Lazy_Embeds_Base {
 			return [];
 		}
 
-		$decoded_attributes = json_decode( $attributes )[0];
+		$decoded_attributes = json_decode( $attributes );
 
-		set_transient( "lazy_embeds_vimeo_{$vimeo_id}", $decoded_attributes, DAY_IN_SECONDS );
+		if ( ! is_array ( $decoded_attributes ) || !isset( $decoded_attributes[0]->title ) ) {
+			return [];
+		}
 
-		return $decoded_attributes;
+		set_transient( $transient_name, $decoded_attributes[0], WEEK_IN_SECONDS );
+
+		return $decoded_attributes[0];
 	}
 
 	/**
@@ -106,10 +110,6 @@ class Lazy_Embeds_Vimeo extends Lazy_Embeds_Base {
 	public function replace_vimeo_embed( $block_content, $block ) {
 		// Sanity check
 		if ( $block['blockName'] !== 'core-embed/vimeo' || is_admin() ) {
-			return $block_content;
-		}
-
-		if ( strpos( $block_content, 'yeet' ) === false ) {
 			return $block_content;
 		}
 
