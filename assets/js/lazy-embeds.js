@@ -31,7 +31,7 @@ const replaceYouTubeEmbed = wrapper => {
 
   const iframeHTML = `<iframe frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen src="https://www.youtube.com/embed/${id}?autoplay=1"></iframe>`;
 
-  wrapper.classList.add("lazy-embeds-wrapper--activated");
+  wrapper.parentElement.classList.add("wp-block-lazy-embeds--activated");
   wrapper.insertAdjacentHTML("beforeend", iframeHTML);
 };
 
@@ -43,7 +43,7 @@ const replaceVimeoEmbed = wrapper => {
 
   const iframeHTML = `<iframe src="https://player.vimeo.com/video/${id}?dnt=1&autoplay=1" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
 
-  target.classList.add("lazy-embeds-wrapper--activated");
+  target.parentElement.classList.add("wp-block-lazy-embeds--activated");
   target.insertAdjacentHTML("beforeend", iframeHTML);
 };
 

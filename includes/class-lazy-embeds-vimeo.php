@@ -1,14 +1,8 @@
 <?php
 
 class Lazy_Embeds_Vimeo extends Lazy_Embeds_Base {
-	/**
-	 * Video attributes from Vimeo API.
-	 *
-	 * @var array
-	 */
-	protected $attributes;
-
 	public function __construct() {
+		$this->provider = 'vimeo';
 		add_filter( 'render_block', [ $this, 'replace_vimeo_embed' ], 10, 2 );
 	}
 
@@ -64,7 +58,7 @@ class Lazy_Embeds_Vimeo extends Lazy_Embeds_Base {
 	/**
 	 * @return string
 	 */
-	private function get_iframe_html() {
+	public function get_iframe_html() {
 		ob_start();
 		?>
 
@@ -115,7 +109,7 @@ class Lazy_Embeds_Vimeo extends Lazy_Embeds_Base {
 	 */
 	public function replace_vimeo_embed( $block_content, $block ) {
 		// Sanity check
-		if ( $block['blockName'] !== 'core-embed/vimeo' || is_admin() ) {
+		if ( $block['blockName'] !== 'core-embed/vimeo' ) {
 			return $block_content;
 		}
 
@@ -131,16 +125,6 @@ class Lazy_Embeds_Vimeo extends Lazy_Embeds_Base {
 			return $block_content;
 		}
 
-		$spacing = $this->get_wrapper_spacing( (int) $this->attributes->width, (int) $this->attributes->height );
-
-		$block_content = str_replace( 'class="wp-block-embed', 'class="wp-block-lazy-embeds', $block_content );
-		$block_content = preg_replace( '/<iframe.*><\/iframe>/', $this->get_iframe_html(), $block_content );
-		$block_content = str_replace(
-			'<div class="wp-block-lazy-embeds__wrapper',
-			'<div data-lazy-embeds-vimeo-id="' . esc_attr( $this->attributes->id ) . '" style="padding-bottom:' . esc_attr( $spacing ) .'%;" class="wp-block-lazy-embeds__wrapper',
-			$block_content
-		);
-
-		return $block_content;
+		return $this->replace_block( $block_content );
 	}
 }

@@ -37,7 +37,9 @@ class Lazy_Embeds {
 	}
 
 	public function run() {
-		new Lazy_Embeds_YouTube();
-		new Lazy_Embeds_Vimeo();
+		if ( ! is_admin() ) {
+			new Lazy_Embeds_YouTube();
+			new Lazy_Embeds_Vimeo();
+		}
 	}
 }

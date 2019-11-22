@@ -2,6 +2,7 @@
 
 class Lazy_Embeds_YouTube extends Lazy_Embeds_Base {
 	public function __construct() {
+		$this->provider = 'youtube';
 		add_filter( 'render_block', [ $this, 'replace_youtube_embed' ], 10, 2 );
 	}
 
@@ -29,6 +30,30 @@ class Lazy_Embeds_YouTube extends Lazy_Embeds_Base {
 	}
 
 	/**
+	 * @return string
+	 */
+	public function get_iframe_html() {
+		ob_start();
+		?>
+
+		<picture class="wp-block-lazy-embeds__thumbnail">
+			<source srcset="<?php echo esc_url( $this->attributes->thumbnail ); ?>" type="image/jpeg">
+			<img src="<?php echo esc_url( $this->attributes->thumbnail ); ?>" alt="<?php printf( __( 'Thumbnail for %s', 'lazy-embeds' ), esc_attr( $this->attributes->title ) ); ?>">
+		</picture>
+
+		<?php if ( isset( $this->attributes->title ) ) : ?>
+			<span class="wp-block-lazy-embeds__youtube-title"><?php echo esc_html( $this->attributes->title ); ?></span>
+		<?php endif; ?>
+
+		<div role="button" tabindex="0" class="wp-block-lazy-embeds__youtube-button" aria-label="<?php esc_attr_e( 'Play', 'lazy-embeds' ); ?>">
+			<svg viewBox="0 0 68 48" xmlns="http://www.w3.org/2000/svg"><g fill-rule="nonzero" fill="none"><path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z"/><path fill="#FFF" d="M45 24L27 14v20"/></g></svg>
+		</div>
+
+		<?php
+		return ob_get_clean();
+	}
+
+	/**
 	 * Replace the YouTube embed iframe with our own wrapper.
 	 *
 	 * @param string $block_content
@@ -37,7 +62,7 @@ class Lazy_Embeds_YouTube extends Lazy_Embeds_Base {
 	 */
 	public function replace_youtube_embed( $block_content, $block ) {
 		// Sanity check
-		if ( $block['blockName'] !== 'core-embed/youtube' || is_admin() ) {
+		if ( $block['blockName'] !== 'core-embed/youtube' ) {
 			return $block_content;
 		}
 
@@ -47,22 +72,10 @@ class Lazy_Embeds_YouTube extends Lazy_Embeds_Base {
 			return $block_content;
 		}
 
-		$attributes = $this->get_iframe_attributes_from_block_content( ['width', 'height', 'title'], $block_content );
-		$spacing = $this->get_wrapper_spacing( (int) $attributes['width'], (int) $attributes['height'] );
-		$thumbnail_url = $this->get_youtube_thumbnail_url_from_id( $youtube_id );
+		$this->attributes = $this->get_iframe_attributes_from_block_content( ['width', 'height', 'title'], $block_content );
+		$this->attributes->id = $youtube_id;
+		$this->attributes->thumbnail = $this->get_youtube_thumbnail_url_from_id( $youtube_id );
 
-		$wrapper = '';
-
-		if ( isset( $attributes['title'] ) ) {
-			$wrapper .= '<span class="wp-block-lazy-embeds__youtube-title">' . esc_html( $attributes['title'] ) . '</span>';
-		}
-
-		$wrapper .= '<div role="button" tabindex="0" class="wp-block-lazy-embeds__youtube-button" aria-label="' . esc_attr__( 'Play', 'lazy-embeds' ) . '"><svg viewBox="0 0 68 48" xmlns="http://www.w3.org/2000/svg"><g fill-rule="nonzero" fill="none"><path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z"/><path fill="#FFF" d="M45 24L27 14v20"/></g></svg></div>';
-
-		$block_content = str_replace( 'class="wp-block-embed', 'class="wp-block-lazy-embeds', $block_content );
-		$block_content = preg_replace( '/<iframe.*><\/iframe>/', $wrapper, $block_content );
-		$block_content = str_replace( '<div class="wp-block-lazy-embeds__wrapper' , '<div data-lazy-embeds-youtube-id="' . esc_attr( $youtube_id ) . '" style="padding-bottom:' . esc_attr( $spacing ) .'%; background-image: url(\'' . esc_url( $thumbnail_url ) . '\')" class="wp-block-lazy-embeds__wrapper', $block_content );
-
-		return $block_content;
+		return $this->replace_block( $block_content );
 	}
 }
