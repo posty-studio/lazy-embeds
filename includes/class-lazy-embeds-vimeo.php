@@ -72,7 +72,11 @@ class Lazy_Embeds_Vimeo extends Lazy_Embeds_Base {
 			<?php if ( isset( $this->attributes->user_url ) && isset( $this->attributes->user_portrait_large )  ) : ?>
 				<div class="wp-block-lazy-embeds__vimeo-portrait" aria-hidden="true">
 					<a href="<?php echo esc_url( $this->attributes->user_url ); ?>" target="_blank" rel="noopener">
-						<img src="<?php echo esc_url( $this->attributes->user_portrait_large ); ?>" alt="<?php esc_attr_e( 'Link to video owner\'s profile', 'lazy-embeds' ); ?>">
+						<picture>
+							<source srcset="<?php echo esc_url( $this->attributes->user_portrait_large ); ?>.webp" type="image/webp">
+							<source srcset="<?php echo esc_url( $this->attributes->user_portrait_large ); ?>.jpg" type="image/jpeg">
+							<img src="<?php echo esc_url( $this->attributes->user_portrait_large ); ?>.jpg" alt="<?php esc_attr_e( 'Link to video owner\'s profile', 'lazy-embeds' ); ?>">
+						</picture>
 					</a>
 				</div>
 			<?php endif; ?>
@@ -92,9 +96,9 @@ class Lazy_Embeds_Vimeo extends Lazy_Embeds_Base {
 			</div>
 		</div>
 
-		<div role="button" tabindex="0" class="wp-block-lazy-embeds__vimeo-button" aria-label="<?php esc_attr_e( 'Play', 'lazy-embeds' ); ?>">
+		<button class="wp-block-lazy-embeds__vimeo-button" aria-label="<?php esc_attr_e( 'Play', 'lazy-embeds' ); ?>">
 			<svg viewBox="0 0 20 20" preserveAspectRatio="xMidYMid"><path d="M1 0l19 10L1 20z"/></svg>
-		</div>
+		</button>
 
 		<?php
 		return ob_get_clean();

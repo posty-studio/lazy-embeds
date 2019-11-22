@@ -24,6 +24,10 @@
     z-index: 2;
 }
 
+.wp-block-lazy-embeds__wrapper a {
+    box-shadow: none !important;
+}
+
 .wp-block-lazy-embeds__wrapper::after {
     content: '';
     display: block;
@@ -99,12 +103,13 @@
 }
 
 .wp-block-lazy-embeds__youtube-button {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 68px;
-    height: 48px;
+    all: unset !important;
+    position: absolute !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 68px !important;
+    height: 48px !important;
 }
 
 .wp-block-lazy-embeds__youtube-button svg {
@@ -130,7 +135,7 @@
 }
 
 /* Vimeo */
-.wp-block-lazy-embeds__wrapper--vimeo :focus {
+.wp-block-lazy-embeds-vimeo :focus {
     outline: #00adef solid 2px;
     outline-offset: 2px;
     color: #00adef;
@@ -154,6 +159,7 @@
 .wp-block-lazy-embeds__vimeo-portrait {
     width: 60px;
     height: 60px;
+    flex-shrink: 0;
     padding: 5px;
     background-color: rgba(23,35,34,.75);
     margin-right: 2px;
@@ -212,15 +218,16 @@
 }
 
 .wp-block-lazy-embeds__vimeo-button {
-    position: absolute;
-    left: 10px;
-    bottom: 10px;
-    width: 65px;
-    height: 40px;
+    all: unset !important;
+    position: absolute !important;
+    left: 10px !important;
+    bottom: 10px !important;
+    width: 65px !important;
+    height: 40px !important;
     background-color: rgba(23,35,34,.75) !important;
-    border-radius: 5px;
-    transition: background-color 0.4s;
-    z-index: 1;
+    border-radius: 5px !important;
+    transition: background-color 0.4s !important;
+    z-index: 1 !important;
 }
 
 .wp-block-lazy-embeds__vimeo-button:hover {

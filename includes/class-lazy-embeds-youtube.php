@@ -20,13 +20,34 @@ class Lazy_Embeds_YouTube extends Lazy_Embeds_Base {
 	}
 
 	/**
-	 * Get the YouTube thumbnail URL from a YouTube ID.
+	 * Get the YouTube thumbnail URLs from a YouTube ID.
 	 *
 	 * @param string $id
 	 * @return string
 	 */
-	private function get_youtube_thumbnail_url_from_id( $youtube_id ) {
-		return esc_url_raw( "https://i.ytimg.com/vi/{$youtube_id}/hqdefault.jpg" );
+	private function get_youtube_thumbnail_urls_from_id( $youtube_id ) {
+		$transient_name = "lazy_embeds_youtube_thumbnails_{$youtube_id}";
+
+		if ( ( $thumbnails = get_transient( $transient_name ) ) !== false ) {
+			return $thumbnails;
+		}
+
+		$webp_url = "https://i.ytimg.com/vi_webp/{$youtube_id}/maxresdefault.webp";
+		$has_webp = wp_remote_retrieve_response_code( wp_remote_get( esc_url_raw( $webp_url ) ) ) === 200;
+
+		$maxres_url = "https://i.ytimg.com/vi/{$youtube_id}/maxresdefault.jpg";
+		$has_maxres = wp_remote_retrieve_response_code( wp_remote_get( esc_url_raw( $maxres_url ) ) ) === 200;
+
+		$type = $has_maxres ? 'maxresdefault' : 'hqdefault';
+
+		$thumbnails = (object) [
+			'webp' => $has_webp ? esc_url_raw( $webp_url ) : false,
+			'default' => esc_url_raw( "https://i.ytimg.com/vi/{$youtube_id}/{$type}.jpg" )
+		];
+
+		set_transient( $transient_name, $thumbnails, MONTH_IN_SECONDS );
+
+		return $thumbnails;
 	}
 
 	/**
@@ -37,17 +58,21 @@ class Lazy_Embeds_YouTube extends Lazy_Embeds_Base {
 		?>
 
 		<picture class="wp-block-lazy-embeds__thumbnail">
-			<source srcset="<?php echo esc_url( $this->attributes->thumbnail ); ?>" type="image/jpeg">
-			<img src="<?php echo esc_url( $this->attributes->thumbnail ); ?>" alt="<?php printf( __( 'Thumbnail for %s', 'lazy-embeds' ), esc_attr( $this->attributes->title ) ); ?>">
+			<?php if ( $this->attributes->thumbnails->webp ) : ?>
+				<source srcset="<?php echo esc_url( $this->attributes->thumbnails->webp ); ?>" type="image/webp">
+			<?php endif; ?>
+
+			<source srcset="<?php echo esc_url( $this->attributes->thumbnails->default ); ?>" type="image/jpeg">
+			<img src="<?php echo esc_url( $this->attributes->thumbnails->default ); ?>" alt="<?php printf( __( 'Thumbnail for %s', 'lazy-embeds' ), esc_attr( $this->attributes->title ) ); ?>">
 		</picture>
 
 		<?php if ( isset( $this->attributes->title ) ) : ?>
 			<span class="wp-block-lazy-embeds__youtube-title"><?php echo esc_html( $this->attributes->title ); ?></span>
 		<?php endif; ?>
 
-		<div role="button" tabindex="0" class="wp-block-lazy-embeds__youtube-button" aria-label="<?php esc_attr_e( 'Play', 'lazy-embeds' ); ?>">
+		<button class="wp-block-lazy-embeds__youtube-button" aria-label="<?php esc_attr_e( 'Play', 'lazy-embeds' ); ?>">
 			<svg viewBox="0 0 68 48" xmlns="http://www.w3.org/2000/svg"><g fill-rule="nonzero" fill="none"><path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z"/><path fill="#FFF" d="M45 24L27 14v20"/></g></svg>
-		</div>
+		</button>
 
 		<?php
 		return ob_get_clean();
@@ -74,7 +99,7 @@ class Lazy_Embeds_YouTube extends Lazy_Embeds_Base {
 
 		$this->attributes = $this->get_iframe_attributes_from_block_content( ['width', 'height', 'title'], $block_content );
 		$this->attributes->id = $youtube_id;
-		$this->attributes->thumbnail = $this->get_youtube_thumbnail_url_from_id( $youtube_id );
+		$this->attributes->thumbnails = $this->get_youtube_thumbnail_urls_from_id( $youtube_id );
 
 		return $this->replace_block( $block_content );
 	}
