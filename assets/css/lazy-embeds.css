@@ -41,6 +41,20 @@
     transition: opacity .3s cubic-bezier(0.0,0.0,0.2,1);
 }
 
+.wp-block-lazy-embeds__thumbnail {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.wp-block-lazy-embeds__thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 /* YouTube */
 .wp-block-lazy-embeds-youtube .wp-block-lazy-embeds__wrapper :focus {
     outline: #f00 solid 2px;

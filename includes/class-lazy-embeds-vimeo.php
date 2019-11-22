@@ -68,6 +68,12 @@ class Lazy_Embeds_Vimeo extends Lazy_Embeds_Base {
 		ob_start();
 		?>
 
+		<picture class="wp-block-lazy-embeds__thumbnail">
+			<source srcset="<?php echo esc_url( $this->attributes->thumbnail_large_webp ); ?>" type="image/webp">
+			<source srcset="<?php echo esc_url( $this->attributes->thumbnail_large_jpg ); ?>" type="image/jpeg">
+			<img src="<?php echo esc_url( $this->attributes->thumbnail_large_jpg ); ?>" alt="<?php printf( __( 'Thumbnail for %s', 'lazy-embeds' ), esc_attr( $this->attributes->title ) ); ?>">
+		</picture>
+
 		<div class="wp-block-lazy-embeds__vimeo-header">
 			<?php if ( isset( $this->attributes->user_url ) && isset( $this->attributes->user_portrait_large )  ) : ?>
 				<div class="wp-block-lazy-embeds__vimeo-portrait" aria-hidden="true">
@@ -129,7 +135,11 @@ class Lazy_Embeds_Vimeo extends Lazy_Embeds_Base {
 
 		$block_content = str_replace( 'class="wp-block-embed', 'class="wp-block-lazy-embeds', $block_content );
 		$block_content = preg_replace( '/<iframe.*><\/iframe>/', $this->get_iframe_html(), $block_content );
-		$block_content = str_replace( '<div class="wp-block-lazy-embeds__wrapper' , '<div data-lazy-embeds-vimeo-id="' . esc_attr( $this->attributes->id ) . '" style="padding-bottom:' . esc_attr( $spacing ) .'%; background-image: url(\'' . esc_url( $this->attributes->thumbnail_large_webp ) . '\')" class="wp-block-lazy-embeds__wrapper', $block_content );
+		$block_content = str_replace(
+			'<div class="wp-block-lazy-embeds__wrapper',
+			'<div data-lazy-embeds-vimeo-id="' . esc_attr( $this->attributes->id ) . '" style="padding-bottom:' . esc_attr( $spacing ) .'%;" class="wp-block-lazy-embeds__wrapper',
+			$block_content
+		);
 
 		return $block_content;
 	}
