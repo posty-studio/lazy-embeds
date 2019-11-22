@@ -1,15 +1,4 @@
-/* Remove default wrapper spacing */
-.wp-block-embed-youtube .wp-block-embed__wrapper:before,
-.wp-block-embed-vimeo .wp-block-embed__wrapper:before {
-    display: none !important;
-}
-
-.wp-block-embed-youtube .wp-block-embed__wrapper,
-.wp-block-embed-vimeo .wp-block-embed__wrapper {
-    padding: 0;
-}
-
-.lazy-embeds-wrapper {
+.wp-block-lazy-embeds__wrapper {
     -webkit-font-smoothing: antialiased;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
     position: relative;
@@ -22,11 +11,11 @@
     cursor: pointer;
 }
 
-.lazy-embeds-wrapper * {
+.wp-block-lazy-embeds__wrapper * {
     box-sizing: border-box;
 }
 
-.lazy-embeds-wrapper iframe {
+.wp-block-lazy-embeds__wrapper iframe {
     position: absolute;
     top: 0;
     left: 0;
@@ -35,7 +24,7 @@
     z-index: 2;
 }
 
-.lazy-embeds-wrapper::after {
+.wp-block-lazy-embeds__wrapper::after {
     content: '';
     display: block;
     position: absolute;
@@ -47,19 +36,19 @@
     opacity: 0;
 }
 
-.lazy-embeds-wrapper--activated::after {
+.wp-block-lazy-embeds__wrapper--activated::after {
     opacity: 1;
     transition: opacity .3s cubic-bezier(0.0,0.0,0.2,1);
 }
 
 /* YouTube */
-.lazy-embeds-wrapper--youtube :focus {
+.wp-block-lazy-embeds-youtube .wp-block-lazy-embeds__wrapper :focus {
     outline: #f00 solid 2px;
     outline-offset: 2px;
     color: #f00;
 }
 
-.lazy-embeds-wrapper--youtube::before {
+.wp-block-lazy-embeds-youtube .wp-block-lazy-embeds__wrapper::before {
     content: '';
     display: block;
     box-sizing: border-box;
@@ -73,9 +62,9 @@
     transition: all 0.2s cubic-bezier(0, 0, 0.2, 1);
 }
 
-.lazy-embeds-wrapper__youtube-title {
+.wp-block-lazy-embeds__youtube-title {
     position: absolute;
-    top: 21px;
+    top: 16px;
     left: 16px;
     right: 16px;
     overflow: hidden;
@@ -89,7 +78,7 @@
     color: #eee;
 }
 
-.lazy-embeds-wrapper__youtube-button {
+.wp-block-lazy-embeds__youtube-button {
     position: absolute;
     left: 50%;
     top: 50%;
@@ -98,36 +87,36 @@
     height: 48px;
 }
 
-.lazy-embeds-wrapper__youtube-button svg {
+.wp-block-lazy-embeds__youtube-button svg {
     width: 68px;
     height: 48px;
 }
 
-.lazy-embeds-wrapper__youtube-button svg path:first-child {
+.wp-block-lazy-embeds__youtube-button svg path:first-child {
     transition: fill .1s cubic-bezier(0.4,0.0,1,1),fill-opacity .1s cubic-bezier(0.4,0.0,1,1);
     fill: #212121;
     fill-opacity: .8;
 }
 
-.lazy-embeds-wrapper:hover .lazy-embeds-wrapper__youtube-button svg path:first-child {
+.wp-block-lazy-embeds__wrapper:hover .wp-block-lazy-embeds__youtube-button svg path:first-child {
     transition: fill .1s cubic-bezier(0.0,0.0,0.2,1),fill-opacity .1s cubic-bezier(0.0,0.0,0.2,1);
     fill: #f00;
     fill-opacity: 1;
 }
 
-.lazy-embeds-wrapper--activated .lazy-embeds-wrapper__youtube-title,
-.lazy-embeds-wrapper--activated .lazy-embeds-wrapper__youtube-button {
+.wp-block-lazy-embeds__wrapper--activated .wp-block-lazy-embeds__youtube-title,
+.wp-block-lazy-embeds__wrapper--activated .wp-block-lazy-embeds__youtube-button {
     display: none;
 }
 
 /* Vimeo */
-.lazy-embeds-wrapper--vimeo :focus {
+.wp-block-lazy-embeds__wrapper--vimeo :focus {
     outline: #00adef solid 2px;
     outline-offset: 2px;
     color: #00adef;
 }
 
-.lazy-embeds-wrapper__vimeo-header {
+.wp-block-lazy-embeds__vimeo-header {
     position: absolute;
     top: 10px;
     left: 10px;
@@ -136,13 +125,13 @@
     z-index: 1;
 }
 
-.lazy-embeds-wrapper__vimeo-meta {
+.wp-block-lazy-embeds__vimeo-meta {
     display: flex;
     flex-flow: column nowrap;
     align-items: flex-start;
 }
 
-.lazy-embeds-wrapper__vimeo-portrait {
+.wp-block-lazy-embeds__vimeo-portrait {
     width: 60px;
     height: 60px;
     padding: 5px;
@@ -150,18 +139,18 @@
     margin-right: 2px;
 }
 
-.lazy-embeds-wrapper__vimeo-portrait a {
+.wp-block-lazy-embeds__vimeo-portrait a {
     display: block;
 }
 
-.lazy-embeds-wrapper__vimeo-portrait img {
+.wp-block-lazy-embeds__vimeo-portrait img {
     width: 50px;
     height: 50px;
     border-radius: 100%;
     cursor: pointer;
 }
 
-.lazy-embeds-wrapper__vimeo-title {
+.wp-block-lazy-embeds__vimeo-title {
     text-decoration: none;
     font-weight: 700;
     font-size: 20px;
@@ -173,11 +162,11 @@
     cursor: pointer;
 }
 
-.lazy-embeds-wrapper__vimeo-title:hover {
+.wp-block-lazy-embeds__vimeo-title:hover {
     color: rgb(255, 82, 16);
 }
 
-.lazy-embeds-wrapper__vimeo-byline {
+.wp-block-lazy-embeds__vimeo-byline {
     color: #fff;
     padding: 2px 4px;
     background-color: rgba(23,35,34,.75);
@@ -187,7 +176,7 @@
     margin-top: 2px;
 }
 
-.lazy-embeds-wrapper__vimeo-username {
+.wp-block-lazy-embeds__vimeo-username {
     color: rgb(0, 173, 239);
     font-family: "Helvetica Neue", Helvetica, Arial;
     text-transform: initial;
@@ -198,11 +187,11 @@
     box-shadow: none !important;
 }
 
-.lazy-embeds-wrapper__vimeo-username:hover {
+.wp-block-lazy-embeds__vimeo-username:hover {
     color: rgb(255, 82, 16);
 }
 
-.lazy-embeds-wrapper__vimeo-button {
+.wp-block-lazy-embeds__vimeo-button {
     position: absolute;
     left: 10px;
     bottom: 10px;
@@ -214,11 +203,11 @@
     z-index: 1;
 }
 
-.lazy-embeds-wrapper__vimeo-button:hover {
+.wp-block-lazy-embeds__vimeo-button:hover {
     background-color: rgb(0, 173, 239) !important;
 }
 
-.lazy-embeds-wrapper__vimeo-button svg {
+.wp-block-lazy-embeds__vimeo-button svg {
     width: 20px;
     height: 20px;
     position: absolute;
@@ -226,10 +215,10 @@
     left: 23px;
 }
 
-.lazy-embeds-wrapper__vimeo-button svg path {
+.wp-block-lazy-embeds__vimeo-button svg path {
     fill: #fff;
 }
-.lazy-embeds-wrapper--activated .lazy-embeds-wrapper__vimeo-header,
-.lazy-embeds-wrapper--activated .lazy-embeds-wrapper__vimeo-button {
+.wp-block-lazy-embeds__wrapper--activated .wp-block-lazy-embeds__vimeo-header,
+.wp-block-lazy-embeds__wrapper--activated .wp-block-lazy-embeds__vimeo-button {
     display: none;
 }
