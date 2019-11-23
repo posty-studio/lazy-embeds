@@ -33,10 +33,10 @@ class Lazy_Embeds_YouTube extends Lazy_Embeds_Base {
 		}
 
 		$webp_url = "https://i.ytimg.com/vi_webp/{$youtube_id}/maxresdefault.webp";
-		$has_webp = wp_remote_retrieve_response_code( wp_remote_get( esc_url_raw( $webp_url ) ) ) === 200;
+		$has_webp = wp_remote_retrieve_response_code( wp_remote_head( esc_url_raw( $webp_url ) ) ) === 200;
 
 		$maxres_url = "https://i.ytimg.com/vi/{$youtube_id}/maxresdefault.jpg";
-		$has_maxres = wp_remote_retrieve_response_code( wp_remote_get( esc_url_raw( $maxres_url ) ) ) === 200;
+		$has_maxres = wp_remote_retrieve_response_code( wp_remote_head( esc_url_raw( $maxres_url ) ) ) === 200;
 
 		$type = $has_maxres ? 'maxresdefault' : 'hqdefault';
 
