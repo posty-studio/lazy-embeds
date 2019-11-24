@@ -13,10 +13,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-define( 'LAZY_EMBEDS_VERSION', '1.0.0' );
-define( 'LAZY_EMBEDS_ASSETS', plugin_dir_url( __FILE__ ) . 'assets/' );
+require_once( trailingslashit( dirname( __FILE__ ) ) . 'autoload.php' );
 
-require plugin_dir_path( __FILE__ ) . 'includes/class-lazy-embeds.php';
-
-$plugin = new Lazy_Embeds();
-$plugin->run();
+$lazy_embeds = new Lazy_Embeds\Setup();
+$lazy_embeds->run();

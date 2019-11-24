@@ -1,6 +1,8 @@
 <?php
 
-class Lazy_Embeds_YouTube extends Lazy_Embeds_Base {
+namespace Lazy_Embeds;
+
+class YouTube extends Base {
 	public function __construct() {
 		$this->provider = 'youtube';
 		add_filter( 'render_block', [ $this, 'replace_youtube_embed' ], 10, 2 );
@@ -27,8 +29,9 @@ class Lazy_Embeds_YouTube extends Lazy_Embeds_Base {
 	 */
 	private function get_youtube_thumbnail_urls_from_id( $youtube_id ) {
 		$transient_name = "lazy_embeds_youtube_thumbnails_{$youtube_id}";
+		$thumbnails = get_transient( $transient_name );
 
-		if ( ( $thumbnails = get_transient( $transient_name ) ) !== false ) {
+		if ( $thumbnails !== false ) {
 			return $thumbnails;
 		}
 
@@ -42,7 +45,7 @@ class Lazy_Embeds_YouTube extends Lazy_Embeds_Base {
 
 		$thumbnails = (object) [
 			'webp' => $has_webp ? esc_url_raw( $webp_url ) : false,
-			'default' => esc_url_raw( "https://i.ytimg.com/vi/{$youtube_id}/{$type}.jpg" )
+			'default' => esc_url_raw( "https://i.ytimg.com/vi/{$youtube_id}/{$type}.jpg" ),
 		];
 
 		set_transient( $transient_name, $thumbnails, MONTH_IN_SECONDS );
@@ -63,7 +66,7 @@ class Lazy_Embeds_YouTube extends Lazy_Embeds_Base {
 			<?php endif; ?>
 
 			<source srcset="<?php echo esc_url( $this->attributes->thumbnails->default ); ?>" type="image/jpeg">
-			<img src="<?php echo esc_url( $this->attributes->thumbnails->default ); ?>" alt="<?php printf( __( 'Thumbnail for %s', 'lazy-embeds' ), esc_attr( $this->attributes->title ) ); ?>">
+			<img src="<?php echo esc_url( $this->attributes->thumbnails->default ); ?>" alt="<?php /* translators: %s: Video title. */ printf( __( 'Thumbnail for %s', 'lazy-embeds' ), esc_attr( $this->attributes->title ) ); ?>">
 		</picture>
 
 		<?php if ( isset( $this->attributes->title ) ) : ?>
@@ -97,7 +100,7 @@ class Lazy_Embeds_YouTube extends Lazy_Embeds_Base {
 			return $block_content;
 		}
 
-		$this->attributes = $this->get_iframe_attributes_from_block_content( ['width', 'height', 'title'], $block_content );
+		$this->attributes = $this->get_iframe_attributes_from_block_content( [ 'width', 'height', 'title' ], $block_content );
 		$this->attributes->id = $youtube_id;
 		$this->attributes->thumbnails = $this->get_youtube_thumbnail_urls_from_id( $youtube_id );
 

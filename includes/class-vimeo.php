@@ -1,6 +1,8 @@
 <?php
 
-class Lazy_Embeds_Vimeo extends Lazy_Embeds_Base {
+namespace Lazy_Embeds;
+
+class Vimeo extends Base {
 	public function __construct() {
 		$this->provider = 'vimeo';
 		add_filter( 'render_block', [ $this, 'replace_vimeo_embed' ], 10, 2 );
@@ -27,8 +29,9 @@ class Lazy_Embeds_Vimeo extends Lazy_Embeds_Base {
 	 */
 	private function get_attributes_from_vimeo_id( $vimeo_id ) {
 		$transient_name = "lazy_embeds_vimeo_{$vimeo_id}";
+		$cached_attributes = get_transient( $transient_name );
 
-		if ( ( $cached_attributes = get_transient( $transient_name ) ) !== false ) {
+		if ( $cached_attributes !== false ) {
 			return $cached_attributes;
 		}
 
@@ -40,7 +43,7 @@ class Lazy_Embeds_Vimeo extends Lazy_Embeds_Base {
 
 		$attributes = json_decode( $attributes );
 
-		if ( ! is_array ( $attributes ) || !isset( $attributes[0]->title ) ) {
+		if ( ! is_array( $attributes ) || ! isset( $attributes[0]->title ) ) {
 			return [];
 		}
 
@@ -65,11 +68,11 @@ class Lazy_Embeds_Vimeo extends Lazy_Embeds_Base {
 		<picture class="wp-block-lazy-embeds__thumbnail">
 			<source srcset="<?php echo esc_url( $this->attributes->thumbnail_large_webp ); ?>" type="image/webp">
 			<source srcset="<?php echo esc_url( $this->attributes->thumbnail_large_jpg ); ?>" type="image/jpeg">
-			<img src="<?php echo esc_url( $this->attributes->thumbnail_large_jpg ); ?>" alt="<?php printf( __( 'Thumbnail for %s', 'lazy-embeds' ), esc_attr( $this->attributes->title ) ); ?>">
+			<img src="<?php echo esc_url( $this->attributes->thumbnail_large_jpg ); ?>" alt="<?php /* translators: %s: Video title. */ printf( __( 'Thumbnail for %s', 'lazy-embeds' ), esc_attr( $this->attributes->title ) ); ?>">
 		</picture>
 
 		<div class="wp-block-lazy-embeds__vimeo-header">
-			<?php if ( isset( $this->attributes->user_url ) && isset( $this->attributes->user_portrait_large )  ) : ?>
+			<?php if ( isset( $this->attributes->user_url ) && isset( $this->attributes->user_portrait_large ) ) : ?>
 				<div class="wp-block-lazy-embeds__vimeo-portrait" aria-hidden="true">
 					<a href="<?php echo esc_url( $this->attributes->user_url ); ?>" target="_blank" rel="noopener">
 						<picture>
@@ -90,7 +93,7 @@ class Lazy_Embeds_Vimeo extends Lazy_Embeds_Base {
 
 				<?php if ( isset( $this->attributes->user_name ) && isset( $this->attributes->user_url ) ) : ?>
 					<div class="wp-block-lazy-embeds__vimeo-byline">
-						<?php printf(__('From %s', 'lazy-embeds'), '<a class="wp-block-lazy-embeds__vimeo-username" href="' . esc_url( $this->attributes->user_url ) . '" target="_blank" rel="noopener">' . esc_html( $this->attributes->user_name ) . '</a>'); ?>
+						<?php /* translators: %s: Vimeo username. */ printf( __( 'From %s', 'lazy-embeds' ), '<a class="wp-block-lazy-embeds__vimeo-username" href="' . esc_url( $this->attributes->user_url ) . '" target="_blank" rel="noopener">' . esc_html( $this->attributes->user_name ) . '</a>' ); ?>
 					</div>
 				<?php endif; ?>
 			</div>

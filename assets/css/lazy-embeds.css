@@ -131,7 +131,7 @@
 
 .wp-block-lazy-embeds--activated .wp-block-lazy-embeds__youtube-title,
 .wp-block-lazy-embeds--activated .wp-block-lazy-embeds__youtube-button {
-    display: none;
+    display: none !important;
 }
 
 /* Vimeo */

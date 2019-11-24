@@ -1,6 +1,8 @@
 <?php
 
-class Lazy_Embeds_Base {
+namespace Lazy_Embeds;
+
+class Base {
 	protected $attributes;
 	protected $provider;
 
@@ -12,7 +14,7 @@ class Lazy_Embeds_Base {
 	 * @return array
 	 */
 	public function get_iframe_attributes_from_block_content( $attributes, $block_content ) {
-		$regex = '/(' . join('|', $attributes) . ')=\"([^"]*)\"/';
+		$regex = '/(' . join( '|', $attributes ) . ')=\"([^"]*)\"/';
 
 		return preg_match_all( $regex, $block_content, $matches ) ? (object) array_combine( $matches[1], $matches[2] ) : [];
 	}
@@ -42,7 +44,7 @@ class Lazy_Embeds_Base {
 		$block_content = preg_replace( '/<iframe.*><\/iframe>/', $this->get_iframe_html(), $block_content );
 		$block_content = str_replace(
 			'<div class="wp-block-lazy-embeds__wrapper',
-			'<div data-lazy-embeds-' . esc_attr( $this->provider ) . '-id="' . esc_attr( $this->attributes->id ) . '" style="padding-bottom:' . esc_attr( $this->get_wrapper_spacing() ) .'%;" class="wp-block-lazy-embeds__wrapper',
+			'<div data-lazy-embeds-' . esc_attr( $this->provider ) . '-id="' . esc_attr( $this->attributes->id ) . '" style="padding-bottom:' . esc_attr( $this->get_wrapper_spacing() ) . '%;" class="wp-block-lazy-embeds__wrapper',
 			$block_content
 		);
 
