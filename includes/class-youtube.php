@@ -22,6 +22,16 @@ class YouTube extends Base {
 	}
 
 	/**
+	 * Get the response code of a specific URL.
+	 *
+	 * @param string $url
+	 * @return int
+	 */
+	private function get_response_code_by_url( $url ) {
+		return wp_remote_retrieve_response_code( wp_remote_head( esc_url( $url ) ) );
+	}
+
+	/**
 	 * Get the YouTube thumbnail URLs from a YouTube ID.
 	 *
 	 * @param string $id
@@ -36,15 +46,12 @@ class YouTube extends Base {
 		}
 
 		$webp_url = "https://i.ytimg.com/vi_webp/{$youtube_id}/maxresdefault.webp";
-		$has_webp = wp_remote_retrieve_response_code( wp_remote_head( esc_url_raw( $webp_url ) ) ) === 200;
-
 		$maxres_url = "https://i.ytimg.com/vi/{$youtube_id}/maxresdefault.jpg";
-		$has_maxres = wp_remote_retrieve_response_code( wp_remote_head( esc_url_raw( $maxres_url ) ) ) === 200;
 
-		$type = $has_maxres ? 'maxresdefault' : 'hqdefault';
+		$type = $this->get_response_code_by_url( $maxres_url ) === 200 ? 'maxresdefault' : 'hqdefault';
 
 		$thumbnails = (object) [
-			'webp' => $has_webp ? esc_url_raw( $webp_url ) : false,
+			'webp' => $this->get_response_code_by_url( $webp_url ) === 200 ? esc_url_raw( $webp_url ) : false,
 			'default' => esc_url_raw( "https://i.ytimg.com/vi/{$youtube_id}/{$type}.jpg" ),
 		];
 
