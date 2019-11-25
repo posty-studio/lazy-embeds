@@ -13,7 +13,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-require_once( trailingslashit( dirname( __FILE__ ) ) . 'autoload.php' );
+require_once trailingslashit( dirname( __FILE__ ) ) . 'autoload.php';
 
 $lazy_embeds = new Lazy_Embeds\Setup();
 $lazy_embeds->run();
