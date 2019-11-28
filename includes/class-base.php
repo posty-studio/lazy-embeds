@@ -39,8 +39,13 @@ class Base {
 	 * @return string
 	 */
 	public function replace_block( $block_content ) {
+		// Replace all 'wp-block-embed' instances
 		$lazy_embed_content = preg_replace( '/wp-block-embed([^"\s]*)/', 'wp-block-lazy-embeds$1', $block_content );
+		// Replace iframe with Lazy Embed
 		$lazy_embed_content = preg_replace( '/<iframe.*><\/iframe>/', $this->get_iframe_html(), $lazy_embed_content );
+		// Keep default wrapper class for styling purposes
+		$lazy_embed_content = str_replace( '<figure class="', '<figure class="wp-block-embed ', $lazy_embed_content );
+		// Add style and attributes to Lazy Embed wrapper
 		$lazy_embed_content = str_replace(
 			'<div class="wp-block-lazy-embeds__wrapper',
 			'<div data-lazy-embeds-' . esc_attr( $this->provider ) . '-id="' . esc_attr( $this->attributes->id ) . '" style="padding-bottom:' . esc_attr( $this->get_wrapper_spacing() ) . '%;" class="wp-block-lazy-embeds__wrapper',
