@@ -1,7 +1,7 @@
 const path = require('path')
 
 module.exports = (env, argv) => ({
-  entry: './src/js/lazy-embeds.js',
+  entry: './src/js/app.js',
   output: {
     path: path.resolve(__dirname, 'assets/js'),
     filename: 'lazy-embeds.js'
