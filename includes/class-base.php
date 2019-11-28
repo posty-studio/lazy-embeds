@@ -55,6 +55,8 @@ class Base {
 		/**
 		 * Filters whether the Lazy Embed should be shown.
 		 *
+		 * @since 1.0.0
+		 *
 		 * @param bool $enable_lazy_embed Whether the Lazy Embed will be enabled. Default true.
 		 * @param string $provider The embed provider.
 		 * @param string $id The id of the embed.
