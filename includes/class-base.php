@@ -25,9 +25,8 @@ class Base {
 	 * @return float
 	 */
 	public function get_wrapper_spacing() {
-		// Sensible defaults.
 		if ( ! $this->attributes->width || ! $this->attributes->height ) {
-			return 56.25;
+			return 56.25; // Equal to 16:9 aspect ratio
 		}
 
 		return round( $this->attributes->height / $this->attributes->width * 100, 2 );

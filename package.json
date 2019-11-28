@@ -1,0 +1,37 @@
+{
+  "name": "lazy-embeds",
+  "version": "1.0.0",
+  "description": "Lazy embeds for the WordPress Block Editor",
+  "scripts": {
+    "styles:prod": "sass src/css/:assets/css/ --no-source-map && postcss ./assets/css/*.css --replace",
+    "styles:dev": "onchange -i 'src/css/**/*.scss' -- sass src/css/:assets/css/",
+    "scripts:prod": "webpack --mode=production",
+    "scripts:dev": "webpack --mode=development",
+    "dev": "npm-run-all --parallel styles:dev scripts:dev",
+    "build": "run-s styles:prod scripts:prod"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/danielpost/lazy-embeds.git"
+  },
+  "author": "Daniel Post <daniel@danielpost.com> (https://danielpost.com/)",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/danielpost/lazy-embeds/issues"
+  },
+  "homepage": "https://lazy-embeds.com",
+  "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "autoprefixer": "^9.6.1",
+    "babel-loader": "^8.0.6",
+    "cssnano": "^4.1.10",
+    "node-sass": "^4.12.0",
+    "npm-run-all": "^4.1.5",
+    "onchange": "^6.1.0",
+    "postcss-cli": "^6.1.3",
+    "postcss-encode-background-svgs": "^1.0.4",
+    "webpack": "^4.39.3",
+    "webpack-cli": "^3.3.7"
+  }
+}

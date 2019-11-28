@@ -16,4 +16,4 @@ if ( ! defined( 'WPINC' ) ) {
 require_once trailingslashit( dirname( __FILE__ ) ) . 'autoload.php';
 
 $lazy_embeds = new Lazy_Embeds\Setup();
-$lazy_embeds->run();
+$lazy_embeds->init();
