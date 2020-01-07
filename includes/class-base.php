@@ -48,7 +48,7 @@ class Base {
 		// Add style and attributes to Lazy Embed wrapper
 		$lazy_embed_content = str_replace(
 			'<div class="wp-block-lazy-embeds__wrapper',
-			'<div data-lazy-embeds-' . esc_attr( $this->provider ) . '-id="' . esc_attr( $this->attributes->id ) . '" style="padding-bottom:' . esc_attr( $this->get_wrapper_spacing() ) . '%;" class="wp-block-lazy-embeds__wrapper',
+			'<div data-lazy-embeds-wrapper data-lazy-embeds-' . esc_attr( $this->provider ) . '-id="' . esc_attr( $this->attributes->id ) . '" style="padding-bottom:' . esc_attr( $this->get_wrapper_spacing() ) . '%;" class="wp-block-lazy-embeds__wrapper',
 			$lazy_embed_content
 		);
 

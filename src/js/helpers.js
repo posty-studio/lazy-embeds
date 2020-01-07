@@ -58,7 +58,13 @@ export const initEmbeds = ({ selector, iframeHTML, preconnectURLs }) => {
         return
       }
 
-      replaceEmbed(event.target, iframeHTML(event.target, selector))
+      const wrapper = event.target.closest('[data-lazy-embeds-wrapper]')
+
+      if (!wrapper) {
+        return
+      }
+
+      replaceEmbed(wrapper, iframeHTML(wrapper, selector))
     })
 
     if (preconnectURLs) {
