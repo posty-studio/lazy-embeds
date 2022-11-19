@@ -32,6 +32,6 @@
     "postcss-cli": "^6.1.3",
     "postcss-encode-background-svgs": "^1.0.4",
     "webpack": "^4.39.3",
-    "webpack-cli": "^3.3.7"
+    "webpack-cli": "^3.3.12"
   }
 }
